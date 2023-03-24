@@ -43,13 +43,15 @@ target_compile_definitions(BloodGod PUBLIC
         JUCE_USE_CURL=0
         JUCE_VST3_CAN_REPLACE_VST2=0)
 
-#juce_add_binary_data(BinaryData SOURCES
-#        ${CMAKE_CURRENT_SOURCE_DIR}/resources/UnderwaterConv.wav
-#        ${CMAKE_CURRENT_SOURCE_DIR}/resources/Thermometer.png
-#        )
+juce_add_binary_data(BinaryData SOURCES
+        ${CMAKE_CURRENT_SOURCE_DIR}/resources/Background.png
+        ${CMAKE_CURRENT_SOURCE_DIR}/resources/Knob.png
+        ${CMAKE_CURRENT_SOURCE_DIR}/resources/LED_OFF.png
+        ${CMAKE_CURRENT_SOURCE_DIR}/resources/LED_ON.png
+        )
 
 target_link_libraries(BloodGod PRIVATE
-        #BinaryData
+        BinaryData
         juce::juce_audio_utils
         juce::juce_dsp
         SDSP

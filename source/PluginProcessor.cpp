@@ -167,6 +167,19 @@ void PluginProcessor::setStateInformation (const void* data, int sizeInBytes)
 }
 
 void PluginProcessor::parameterChanged(const juce::String &id, float value) {
+    if(id == "Distortion") {
+
+    }
+    else if(id == "Tone") {
+
+    }
+    else if(id == "Volume") {
+
+    }
+    else if(id == "Bypass") {
+
+    }
+
     if(id == "Bias") {
         m_fuzz.setBias(value);
     }
@@ -196,7 +209,13 @@ void PluginProcessor::parameterChanged(const juce::String &id, float value) {
 APVTS::ParameterLayout PluginProcessor::createLayout()
 {
     using FloatParam = juce::AudioParameterFloat;
+    using StateParam = juce::AudioParameterBool;
     APVTS::ParameterLayout layout;
+    layout.add(std::make_unique<FloatParam>(juce::ParameterID{"Distortion", 1}, "Distortion", juce::NormalisableRange<float>(0.0f, 1.0f, 0.01f), 0.5f));
+    layout.add(std::make_unique<FloatParam>(juce::ParameterID{"Tone", 1}, "Tone", juce::NormalisableRange<float>(0.0f, 1.0f, 0.01f), 0.5f));
+    layout.add(std::make_unique<FloatParam>(juce::ParameterID{"Volume", 1}, "Volume", juce::NormalisableRange<float>(0.0f, 1.0f, 0.01f), 0.5f));
+    layout.add(std::make_unique<StateParam>(juce::ParameterID{"Bypass", 1}, "Bypass", false));
+
     layout.add(std::make_unique<FloatParam>(juce::ParameterID{"Bias", 1}, "Bias", juce::NormalisableRange<float>(0.0f, 30.0f, 0.01f), 0.5f));
     layout.add(std::make_unique<FloatParam>(juce::ParameterID{"PreHPCutoff1", 1}, "PreHPCutoff1", juce::NormalisableRange<float>(100.0f, 500.0f, 0.01f), 250.0f));
     layout.add(std::make_unique<FloatParam>(juce::ParameterID{"PreHPCutoff2", 1}, "PreHPCutoff2", juce::NormalisableRange<float>(100.0f, 500.0f, 0.01f), 250.0f));
@@ -210,6 +229,11 @@ APVTS::ParameterLayout PluginProcessor::createLayout()
 
 void PluginProcessor::bindListeners()
 {
+    m_tree.addParameterListener("Distortion", this);
+    m_tree.addParameterListener("Tone", this);
+    m_tree.addParameterListener("Volume", this);
+    m_tree.addParameterListener("Bypass", this);
+
     m_tree.addParameterListener("Bias", this);
     m_tree.addParameterListener("PreHPCutoff1", this);
     m_tree.addParameterListener("PreHPCutoff2", this);
